@@ -3,24 +3,19 @@ const path = require('path');
 
 const debug = require('debug')('extract');
 
-const mapping = {
-    '.7z': require('./extractor/7z'),
-    '.zip': require('./extractor/unzip'),
-    '.tar.bz2': require('./extractor/tar-bz2'),
-    '.gz': require('./extractor/gz')
-};
+const ExtractParams = require('./src/ExtractParams');
 
-/**
- * Extraction result
- * @typedef {Object} ExtractResult
- * @property {string} archivePath original path
- * @property {string} targetPath extraction path (parent dir)
- */
+const mapping = {
+    '.7z': require('./src/extractor/7z'),
+    '.zip': require('./src/extractor/unzip'),
+    '.tar.bz2': require('./src/extractor/tar-bz2'),
+    '.gz': require('./src/extractor/gz')
+};
 
 
 /**
  * Find extractor by extension
- * @param {string} archivePath 
+ * @param {string} archivePath
  * @return {Function}
  */
 function findExtractor(archivePath){
@@ -35,33 +30,31 @@ function findExtractor(archivePath){
             bestExtension = extension;
         }
     });
+    if ( bestExtension === null ){
+        throw new Error('No extractor found for '+archivePath);
+    }
     debug(`found ${bestExtension} extractor for ${archivePath}`);
-    return bestExtension != null ? mapping[bestExtension] : null;
+    return mapping[bestExtension];
 }
 
 /**
- * Extracts archive (7z, zip and bz2) in parent directory
+ * Extracts archives (7z, zip, bz2...)
  *
  * Note that it relies on system CLI tools
  *
- * @param {string} archivePath
+ * @typedef {Object} options
+ * @property {string} options.archivePath original path
+ * @property {string} [options.targetPath] extraction path (parent dir)
  *
- * @returns {ExtractResult}
+ * @returns {ExtractParams}
  */
-async function extract(archivePath){
-    if ( ! fs.existsSync(archivePath) ){
-        throw new Error("file not found : "+archivePath);
-    }
+async function extract(options){
+    let params = new ExtractParams(options);
 
-    let extractor = findExtractor(archivePath);
-    if ( extractor === null ){
-        throw new Error('No extractor found for '+archivePath);
-    }
-    extractor(archivePath);
-    return {
-        archivePath: archivePath,
-        targetPath: path.dirname(archivePath)
-    }
+    /* find extractor */
+    let extractor = findExtractor(params.archivePath);
+    extractor(params);
+    return params;
 }
 
 module.exports = extract;

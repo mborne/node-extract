@@ -11,7 +11,9 @@ describe("Test extractor errors", function () {
 
         var thrown = false;
         try {
-            await extract(archivePath);
+            await extract({
+                archivePath: archivePath
+            });
         }catch(err){
             thrown = true;
         }
@@ -23,7 +25,9 @@ describe("Test extractor errors", function () {
 
         var thrown = false;
         try {
-            await extract(archivePath);
+            await extract({
+                archivePath: archivePath
+            });
         }catch(err){
             thrown = true;
         }

@@ -1,26 +1,25 @@
 const shell = require('shelljs');
-const path = require('path');
-
 const debug = require('debug')('extract');
+
+const ExtractParams = require('../ExtractParams');
 
 /**
  * Extract .7z archives
+ * @param {ExtractParams} params
  */
-function extractor7z(archivePath){
+function extractor7z(params){
     /*
     * check for 7z
     */
     if (!shell.which('7z')) {
-        throw '7z is missing to extract '+archivePath;
+        throw '7z is missing to extract '+params.archivePath;
     }
 
-    var targetPath = path.dirname(archivePath);
-
     /* Extract zip file */
-    var command = '7z x -y '+archivePath+' -o'+targetPath;
+    var command = '7z x -y '+params.archivePath+' -o'+params.targetDir;
     debug(command);
     if (shell.exec(command,{silent: true}).code !== 0) {
-        throw 'Fail to extract '+archivePath;
+        throw new Error('Fail to extract '+params.archivePath);
     }
 }
 

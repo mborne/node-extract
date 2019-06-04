@@ -9,14 +9,17 @@ Extract archives (7z, zip, bz2, gz,...) using system executables
 ```js
 const extract = require('@mborne/extract');
 
-await extract('/path/to/archive.zip');
+await extract({
+    archivePath: '/path/to/archive.zip'
+});
 ```
 
 ## Options
 
-| Name          | Required? | Description  | Default |
-| ------------- | :-------: | ------------ | :-----: |
-| `archivePath` |    YES    | Archive path |   NA    |
+| Name          | Required? | Description                     |     Default      |
+| ------------- | :-------: | ------------------------------- | :--------------: |
+| `archivePath` |    YES    | Archive path                    |        NA        |
+| `targetDir`   |    NO     | Target directory for extraction | Parent directory |
 
 ## License
 

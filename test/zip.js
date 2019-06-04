@@ -14,7 +14,9 @@ describe("Test zip extractor", function () {
             shell.rm('-rf',targetPath);
         }
 
-        await extract(archivePath);
+        await extract({
+            archivePath: archivePath
+        });
 
         let readmePath = targetPath+'/README.txt';
         expect(fs.existsSync(readmePath)).to.equal(true);

@@ -14,7 +14,9 @@ describe("Test gz extractor", function () {
             fs.unlinkSync(targetPath);
         }
 
-        await extract(archivePath);
+        await extract({
+            archivePath: archivePath
+        });
 
         expect(fs.existsSync(targetPath)).to.equal(true);
 
