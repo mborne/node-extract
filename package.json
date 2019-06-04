@@ -4,7 +4,8 @@
   "description": "Extract archives (7z, zip, bz2, gz,...) using system executables",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "coverage": "nyc --all --reporter=html npm test"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,8 @@
   "homepage": "https://github.com/mborne/node-extract#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1"
   },
   "dependencies": {
     "shelljs": "^0.8.3"
