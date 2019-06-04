@@ -14,6 +14,7 @@ function bz2(params){
     if (!shell.which('tar')) {
         throw 'tar is missing to extract '+params.archivePath;
     }
+    shell.mkdir('-p',params.targetDir);
     var command = 'tar xf '+params.archivePath+' -C '+params.targetDir;
     debug(command);
     if (shell.exec(command,{silent: true}).code !== 0) {
