@@ -1,0 +1,36 @@
+{
+  "name": "@mborne/extract",
+  "version": "0.1.0",
+  "description": "Extract archives (7z, zip, bz2, gz,...) using system executables",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mborne/node-extract.git"
+  },
+  "keywords": [
+    "download",
+    "wget",
+    "http",
+    "https",
+    "ftp"
+  ],
+  "author": "Mickaël Borne <mborne@users.noreply.github.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mborne/node-extract/issues"
+  },
+  "homepage": "https://github.com/mborne/node-extract#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
+  },
+  "dependencies": {
+    "shelljs": "^0.8.3"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
