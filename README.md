@@ -1,6 +1,6 @@
 # node-extract
 
-[![Node.js CI](https://github.com/mborne/node-extract/actions/workflows/node.js.yml/badge.svg)](https://github.com/mborne/node-extract/actions/workflows/node.js.yml)
+[![Node.js CI](https://github.com/mborne/node-extract/actions/workflows/node.js.yml/badge.svg)](https://github.com/mborne/node-extract/actions/workflows/node.js.yml) [![Coverage Status](https://coveralls.io/repos/github/mborne/node-extract/badge.svg?branch=master)](https://coveralls.io/github/mborne/node-extract?branch=master)
 
 ## Description
 
