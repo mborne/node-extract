@@ -28,3 +28,9 @@ jobs:
 
     - name: Run tests
       run: npm test
+
+    - name: Publish coverage to coveralls.io
+      run: npm run coveralls
+      if: github.ref == 'refs/heads/master'
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
