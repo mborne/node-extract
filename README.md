@@ -1,6 +1,6 @@
 # node-extract
 
-**IN PROGRESS**
+[![Node.js CI](https://github.com/mborne/node-extract/actions/workflows/node.js.yml/badge.svg)](https://github.com/mborne/node-extract/actions/workflows/node.js.yml)
 
 ## Description
 
