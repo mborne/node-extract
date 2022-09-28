@@ -12,11 +12,11 @@
     "url": "git+https://github.com/mborne/node-extract.git"
   },
   "keywords": [
-    "download",
-    "wget",
-    "http",
-    "https",
-    "ftp"
+    "extract",
+    "zip",
+    "gz",
+    "tar",
+    "7z"
   ],
   "author": "Mickaël Borne <mborne@users.noreply.github.com>",
   "license": "MIT",
