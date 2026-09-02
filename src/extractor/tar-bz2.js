@@ -1,3 +1,4 @@
+const { execFileSync } = require('child_process');
 const shell = require('shelljs');
 const debug = require('debug')('extract');
 
@@ -9,15 +10,16 @@ const ExtractParams = require('../ExtractParams');
  */
 function bz2(params){
     /*
-    * check for 7z
+    * check for tar
     */
     if (!shell.which('tar')) {
         throw 'tar is missing to extract '+params.archivePath;
     }
     shell.mkdir('-p',params.targetDir);
-    var command = 'tar xf '+params.archivePath+' -C '+params.targetDir;
-    debug(command);
-    if (shell.exec(command,{silent: true}).code !== 0) {
+    debug('tar xf %s -C %s', params.archivePath, params.targetDir);
+    try {
+        execFileSync('tar', ['xf', params.archivePath, '-C', params.targetDir], { stdio: 'ignore' });
+    } catch (err) {
         throw new Error('Fail to extract '+params.archivePath);
     }
 }

@@ -1,3 +1,5 @@
+const { execFileSync } = require('child_process');
+const fs = require('fs');
 const shell = require('shelljs');
 const debug = require('debug')('extract');
 const path = require('path');
@@ -5,7 +7,7 @@ const path = require('path');
 const ExtractParams = require('../ExtractParams');
 
 /**
- * Extract .zip archives
+ * Extract .gz archives
  * @param {ExtractParams} params
  */
 function gz(params){
@@ -18,9 +20,11 @@ function gz(params){
         path.basename(params.archivePath,'.gz')
     );
     shell.mkdir('-p',params.targetDir);
-    var command = 'gunzip < '+params.archivePath+' > '+targetPath;
-    debug(command);
-    if (shell.exec(command,{silent: true}).code !== 0) {
+    debug('gunzip -c %s > %s', params.archivePath, targetPath);
+    try {
+        const out = execFileSync('gunzip', ['-c', params.archivePath]);
+        fs.writeFileSync(targetPath, out);
+    } catch (err) {
         throw new Error('Fail to extract '+params.archivePath);
     }
 }

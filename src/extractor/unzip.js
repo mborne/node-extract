@@ -1,3 +1,4 @@
+const { execFileSync } = require('child_process');
 const shell = require('shelljs');
 const debug = require('debug')('extract');
 
@@ -9,14 +10,16 @@ const ExtractParams = require('../ExtractParams');
  */
 function unzip(params){
     /*
-    * check for 7z
+    * check for unzip
     */
     if (!shell.which('unzip')) {
         throw 'unzip is missing to extract '+params.archivePath;
     }
-    var command = 'unzip -o -d '+params.targetDir+' '+params.archivePath;
-    debug(command);
-    if (shell.exec(command,{silent: true}).code !== 0) {
+    shell.mkdir('-p', params.targetDir);
+    debug('unzip -o -d %s %s', params.targetDir, params.archivePath);
+    try {
+        execFileSync('unzip', ['-o', '-d', params.targetDir, params.archivePath], { stdio: 'ignore' });
+    } catch (err) {
         throw 'Fail to extract '+params.archivePath;
     }
 }
