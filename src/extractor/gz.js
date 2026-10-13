@@ -21,11 +21,16 @@ function gz(params){
     );
     shell.mkdir('-p',params.targetDir);
     debug('gunzip -c %s > %s', params.archivePath, targetPath);
+    /* stream gunzip stdout to the target file (no in-memory buffering) */
+    let fd = fs.openSync(targetPath, 'w');
     try {
-        const out = execFileSync('gunzip', ['-c', params.archivePath]);
-        fs.writeFileSync(targetPath, out);
+        execFileSync('gunzip', ['-c', '--', params.archivePath], {
+            stdio: ['ignore', fd, 'ignore']
+        });
     } catch (err) {
         throw new Error('Fail to extract '+params.archivePath);
+    } finally {
+        fs.closeSync(fd);
     }
 }
 
