@@ -7,7 +7,7 @@
 Extract archives (7z, zip, bz2, gz,...) using system executables
 
 > [!WARNING]
-> This library is **not actively maintained**. It was extracted from a previous Node.js version of [mborne/postgis-integration](https://github.com/mborne/postgis-integration) which has been ported to Python (see [mborne/postgis-integration#18](https://github.com/mborne/postgis-integration/issues/18)).
+> This library is **not actively maintained**. It was used by a previous Node.js version of [mborne/postgis-integration](https://github.com/mborne/postgis-integration) which has been ported to Python (see [mborne/postgis-integration#18](https://github.com/mborne/postgis-integration/issues/18)).
 
 ## Usage
 
