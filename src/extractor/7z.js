@@ -1,3 +1,4 @@
+const { execFileSync } = require('child_process');
 const shell = require('shelljs');
 const debug = require('debug')('extract');
 
@@ -15,10 +16,11 @@ function extractor7z(params){
         throw '7z is missing to extract '+params.archivePath;
     }
 
-    /* Extract zip file */
-    var command = '7z x -y '+params.archivePath+' -o'+params.targetDir;
-    debug(command);
-    if (shell.exec(command,{silent: true}).code !== 0) {
+    /* Extract 7z file */
+    debug('7z x -y %s -o%s', params.archivePath, params.targetDir);
+    try {
+        execFileSync('7z', ['x', '-y', params.archivePath, '-o' + params.targetDir], { stdio: 'ignore' });
+    } catch (err) {
         throw new Error('Fail to extract '+params.archivePath);
     }
 }

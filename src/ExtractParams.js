@@ -14,11 +14,15 @@ class ExtractParams {
         if ( ! fs.existsSync(options.archivePath) ){
             throw new Error("file not found : "+options.archivePath);
         }
-        this.archivePath = options.archivePath;
+        /*
+         * absolute paths ensure that they can't be interpreted as
+         * command line options by extractors (ex : "-oFoo.zip")
+         */
+        this.archivePath = path.resolve(options.archivePath);
 
          /* handle optional option targetPath */
         this.targetDir = ( typeof options.targetDir !== 'undefined' )?
-            options.targetDir : path.dirname(this.archivePath)
+            path.resolve(options.targetDir) : path.dirname(this.archivePath)
         ;
     }
 
