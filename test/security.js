@@ -1,10 +1,10 @@
-const expect = require("chai").expect;
+const assert = require('assert');
 
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const zlib = require('zlib');
-const shell = require('shelljs');
+const { spawnSync } = require('child_process');
 
 const extract = require('../index');
 
@@ -28,14 +28,14 @@ describe("Test extractor with untrusted paths", function () {
 
     afterEach(function(){
         process.chdir(originalCwd);
-        shell.rm('-rf', workDir);
+        fs.rmSync(workDir, { recursive: true, force: true });
     });
 
     function expectNoInjection(){
         const files = fs.readdirSync(workDir).filter(function(name){
             return name.startsWith('pwned');
         });
-        expect(files).to.deep.equal([], 'shell injection detected');
+        assert.deepStrictEqual(files, [], 'shell injection detected');
     }
 
     const samples = {
@@ -47,7 +47,7 @@ describe("Test extractor with untrusted paths", function () {
 
     Object.keys(samples).forEach(function(extension){
         it(`should safely extract ${extension} with untrusted paths`, async function () {
-            if ( extension === '.7z' && ! shell.which('7z') ){
+            if ( extension === '.7z' && spawnSync('7z').error ){
                 this.skip();
             }
             const archivePath = EVIL_NAME + extension;
@@ -66,7 +66,7 @@ describe("Test extractor with untrusted paths", function () {
                 path.join(workDir, EVIL_TARGET, EVIL_NAME) :
                 path.join(workDir, EVIL_TARGET, 'README.txt')
             ;
-            expect(fs.readFileSync(readmePath, 'utf-8')).to.contain("this is a test archive");
+            assert.ok(fs.readFileSync(readmePath, 'utf-8').includes("this is a test archive"));
             expectNoInjection();
         });
     });
@@ -80,6 +80,6 @@ describe("Test extractor with untrusted paths", function () {
             archivePath: archivePath
         });
 
-        expect(fs.statSync(path.join(workDir, 'large.bin')).size).to.equal(size);
+        assert.strictEqual(fs.statSync(path.join(workDir, 'large.bin')).size, size);
     });
 });

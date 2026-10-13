@@ -1,7 +1,6 @@
-const expect = require("chai").expect;
+const assert = require('assert');
 
 const fs = require('fs');
-const shell = require('shelljs');
 
 const extract = require('../index');
 
@@ -12,7 +11,7 @@ const extract = require('../index');
 async function testExtract(archivePath){
     let targetDir  = '/tmp/test-extract';
     if ( fs.existsSync(targetDir) ){
-        shell.rm('-rf',targetDir);
+        fs.rmSync(targetDir, { recursive: true, force: true });
     }
 
     await extract({
@@ -21,13 +20,12 @@ async function testExtract(archivePath){
     });
 
     let readmePath = targetDir+'/README.txt';
-    expect(fs.existsSync(readmePath)).to.equal(true,
+    assert.ok(fs.existsSync(readmePath),
         `testExtract(${archivePath},${targetDir}) - ${readmePath} not found`
     );
 
     let content = fs.readFileSync(readmePath,'utf-8');
-    expect(content).to.contain(
-        "this is a test archive",
+    assert.ok(content.includes("this is a test archive"),
         `testExtract(${archivePath},${targetDir}) - expected content not found`
     );
 }

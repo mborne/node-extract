@@ -1,38 +1,32 @@
-const { execFileSync } = require('child_process');
 const fs = require('fs');
-const shell = require('shelljs');
-const debug = require('debug')('extract');
 const path = require('path');
 
 const ExtractParams = require('../ExtractParams');
+const execExtractor = require('../execExtractor');
 
 /**
  * Extract .gz archives
  * @param {ExtractParams} params
  */
 function gz(params){
-    if (!shell.which('gunzip')) {
-        throw 'gunzip is missing to extract '+params.archivePath;
-    }
-
     let targetPath = path.resolve(
         params.targetDir,
         path.basename(params.archivePath,'.gz')
     );
-    shell.mkdir('-p',params.targetDir);
-    debug('gunzip -c %s > %s', params.archivePath, targetPath);
+    fs.mkdirSync(params.targetDir, { recursive: true });
     /* stream gunzip stdout to the target file (no in-memory buffering) */
     let fd = fs.openSync(targetPath, 'w');
     try {
-        execFileSync('gunzip', ['-c', '--', params.archivePath], {
+        execExtractor(params, 'gunzip', ['-c', '--', params.archivePath], {
             stdio: ['ignore', fd, 'ignore']
         });
     } catch (err) {
-        throw new Error('Fail to extract '+params.archivePath);
-    } finally {
+        /* do not leave an empty or partial file */
         fs.closeSync(fd);
+        fs.unlinkSync(targetPath);
+        throw err;
     }
+    fs.closeSync(fd);
 }
 
 module.exports = gz;
-
